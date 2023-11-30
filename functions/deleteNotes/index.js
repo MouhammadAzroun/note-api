@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const { sendResponse } = require('../../responses');
 const db = new AWS.DynamoDB.DocumentClient();
-const middy = require('@middy/core'); // Vi importerar middy
+const middy = require('@middy/core');
 const { validateToken } = require('../middleware/auth');
 
 const deleteNotes = async(event, context) => {
@@ -21,7 +21,7 @@ const deleteNotes = async(event, context) => {
         const noteForDelete = Items.find((notes) => notes.id === id);
 
         if(!noteForDelete) {
-            return sendResponse(404, {success: false, message : 'Note not found with this id!'});
+            return sendResponse(404, {success: false, message : 'id does not match any notes'});
         }
 
         await db.delete({
@@ -29,9 +29,9 @@ const deleteNotes = async(event, context) => {
             Key : { id: noteForDelete.id }
         }).promise();
 
-        return sendResponse(200, { success: true, message : 'note deleted' });
+        return sendResponse(200, { success: true, message : 'note successfull' });
     } catch (error) {
-        return sendResponse(500, { success: false, message : 'could not delete note'});
+        return sendResponse(500, { success: false, message : 'error'});
     }
 
 }
