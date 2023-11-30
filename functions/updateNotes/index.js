@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const { sendResponse } = require('../../responses');
 const db = new AWS.DynamoDB.DocumentClient();
-const middy = require('@middy/core'); // Vi importerar middy
+const middy = require('@middy/core');
 const { validateToken } = require('../middleware/auth');
 
 const updateNotes = async(event, context) => {
@@ -21,7 +21,7 @@ const updateNotes = async(event, context) => {
         const updateNote = Items.find((notes) => notes.id === id);
 
         if(!updateNote) {
-            return sendResponse(404, {success: false, message : 'Note not found with this id!'});
+            return sendResponse(404, {success: false, message : 'Id does not match any note'});
         }
     
         const createdAt = new Date().toISOString();
@@ -45,9 +45,9 @@ const updateNotes = async(event, context) => {
             }
         }).promise();
 
-        return sendResponse(200, { success: true, message : 'note updatet successfully' });
+        return sendResponse(200, { success: true, message : 'Successful' });
     } catch (error) {
-        return sendResponse(500, { success: false, message : 'could not update note'});
+        return sendResponse(500, { success: false, message : 'Error'});
     }
 
 }
